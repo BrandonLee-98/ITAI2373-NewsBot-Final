@@ -14,7 +14,7 @@ class QueryProcessor:
         self.translator = NewsTranslator()
         
     def detect_intent(self, user_query):
-        """Identifies user goals, now including translation[cite: 1566]."""
+        """Identifies user goals, now including translation."""
         query = user_query.lower()
         
         if any(word in query for word in ["translate", "language", "spanish", "french"]):
@@ -30,7 +30,7 @@ class QueryProcessor:
     def process(self, user_query, article_text=None, article_db=None):
         intent = self.detect_intent(user_query)
         
-        # New Intent: Translation Workflow [cite: 1564]
+        # Translation Workflow
         if intent == "translate" and article_text:
             lang = self.detector.identify_language(article_text)
             if lang == 'en':
@@ -39,10 +39,11 @@ class QueryProcessor:
             return (f"Detected Language: {lang}\n"
                     f"Translation: {translation['translated']}")
 
-        # Existing Intents
+        # Summarization Workflow
         elif intent == "summarize" and article_text:
             return f"Summary: {self.summarizer.summarize(article_text)}"
             
+        # Analysis Workflow
         elif intent == "analyze" and article_text:
             metrics = self.sentiment.get_sentiment_metrics(article_text)
             return f"The tone is {metrics['label']} (Polarity: {metrics['polarity']})."
