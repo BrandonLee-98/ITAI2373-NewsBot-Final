@@ -36,8 +36,7 @@ class QueryProcessor:
             if lang == 'en':
                 return "This article is already in English."
             translation = self.translator.translate_to_english(article_text)
-            return (f"Detected Language: {lang}\n"
-                    f"Translation: {translation['translated']}")
+            return f"Detected Language: {lang}\nTranslation: {translation['translated']}"
 
         # Summarization Workflow
         elif intent == "summarize" and article_text:
