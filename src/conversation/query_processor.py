@@ -17,34 +17,28 @@ class QueryProcessor:
         """Identifies user goals, now including translation."""
         query = user_query.lower()
         
-        if any(word in query for word in ["translate", "language", "spanish", "french"]):
+        if any(word in query for word in ["translate", "language", "spanish"]):
             return "translate"
-        elif any(word in query for word in ["summarize", "summary", "brief"]):
+        elif any(word in query for word in ["summarize", "summary"]):
             return "summarize"
-        elif any(word in query for word in ["find", "search", "looking for"]):
-            return "search"
-        elif any(word in query for word in ["analyze", "sentiment", "mood"]):
+        elif any(word in query for word in ["analyze", "sentiment"]):
             return "analyze"
         return "general_query"
 
     def process(self, user_query, article_text=None, article_db=None):
         intent = self.detect_intent(user_query)
         
-        # Translation Workflow
         if intent == "translate" and article_text:
             lang = self.detector.identify_language(article_text)
-            if lang == 'en':
-                return "This article is already in English."
+            if lang == 'en': return "Already in English."
             translation = self.translator.translate_to_english(article_text)
-            return f"Detected Language: {lang}\nTranslation: {translation['translated']}"
+            return f"Language: {lang}\nTranslation: {translation['translated']}"
 
-        # Summarization Workflow
         elif intent == "summarize" and article_text:
-            return f"Summary: {self.summarizer.summarize(article_text)}"
+            return self.summarizer.summarize(article_text)
             
-        # Analysis Workflow
         elif intent == "analyze" and article_text:
             metrics = self.sentiment.get_sentiment_metrics(article_text)
-            return f"The tone is {metrics['label']} (Polarity: {metrics['polarity']})."
+            return f"Tone: {metrics['label']} (Polarity: {metrics['polarity']})"
 
-        return "I'm ready to help! Try 'summarize this' or 'translate this'."
+        return "How can I help with your news analysis today?"
