@@ -1,84 +1,45 @@
 import re
-import string
-import nltk
 import spacy
 from nltk.corpus import stopwords
 
 class TextPreprocessor:
-    """
-    Enhanced text preprocessing pipeline for NewsBot 2.0.
-    Handles cleaning, stopword removal, and lemmatization. [cite: 1538]
-    """
+    """Handles cleaning, stopword removal, and lemmatization."""
     
     def __init__(self, spacy_model="en_core_web_sm"):
-        """Initialize NLP resources and load models. [cite: 331, 332]"""
+        """Initialize NLP resources and load models."""
         try:
-            self.nlp = spacy.load(spacy_model) [cite: 341]
-        except OSError:
-            # Automatic fallback if model isn't installed
-            from spacy.cli import download
-            download(spacy_model)
             self.nlp = spacy.load(spacy_model)
+        except OSError:
+            # Fallback if model isn't linked correctly
+            import en_core_web_sm
+            self.nlp = en_core_web_sm.load()
             
-        # Initialize stopwords from NLTK
-        nltk.download('stopwords', quiet=True)
-        nltk.download('punkt', quiet=True)
         self.stop_words = set(stopwords.words('english'))
 
-    def clean_raw_text(self, text):
-        """
-        Performs basic string cleaning: lowercasing, URL removal, and punctuation stripping.
-        Extracted from Midterm logic.
-        """
-        if not isinstance(text, str):
-            return ""
-            
+    def clean_text(self, text):
+        """Standard cleaning pipeline."""
         # 1. Lowercase
         text = text.lower()
-        
-        # 2. Remove URLs [cite: 356]
-        text = re.sub(r'https?://\S+|www\.\S+', '', text)
-        
-        # 3. Remove punctuation and special characters [cite: 358]
-        text = re.sub(r'[%s]' % re.escape(string.punctuation), '', text)
-        
-        # 4. Remove extra whitespace [cite: 356]
-        text = re.sub(r'\s+', ' ', text).strip()
-        
+        # 2. Remove URLs
+        text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
+        # 3. Remove punctuation and special characters
+        text = re.sub(r'[^\w\s]', '', text)
+        # 4. Remove extra whitespace
+        text = " ".join(text.split())
         return text
 
-    def process(self, text, use_lemmatization=True):
-        """
-        Main pipeline to transform raw text into a cleaned, tokenized format.
-        Returns a single string of processed tokens. 
-        """
-        # Clean the string first
-        cleaned = self.clean_raw_text(text)
+    def preprocess(self, text):
+        """Full preprocessing: clean -> tokenize -> lemmatize -> remove stopwords."""
+        cleaned = self.clean_text(text)
         
-        if not cleaned:
-            return ""
-
-        # Process with spaCy for lemmatization and stopword removal [cite: 341, 353]
+        # Process with spaCy for lemmatization and stopword removal
         doc = self.nlp(cleaned)
         
-        tokens = []
-        for token in doc:
-            # Check if token is a stopword or too short
-            if token.text not in self.stop_words and len(token.text) > 2:
-                if use_lemmatization:
-                    tokens.append(token.lemma_)
-                else:
-                    tokens.append(token.text)
-                    
+        # Keep tokens that are not stopwords and are alphabetic
+        tokens = [token.lemma_ for token in doc if not token.is_stop and token.is_alpha]
+        
         return " ".join(tokens)
 
     def batch_process(self, texts):
-        """Processes a list of strings efficiently. [cite: 1510]"""
-        return [self.process(t) for t in texts]
-
-if __name__ == "__main__":
-    # Quick test for Phase 1 validation [cite: 1510]
-    preprocessor = TextPreprocessor()
-    sample = "Apple Inc. is looking at buying a U.K. startup for $1 billion! https://apple.com"
-    print(f"Original: {sample}")
-    print(f"Processed: {preprocessor.process(sample)}")
+        """Processes a list of strings efficiently."""
+        return [self.preprocess(t) for t in texts]
