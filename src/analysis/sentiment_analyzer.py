@@ -16,6 +16,7 @@ class SentimentAnalyzer:
     def get_sentiment_metrics(self, text):
         """
         Returns a detailed dictionary of sentiment scores.
+        Calibrated for long-form, objective news text.
         """
         if not text:
             return {"polarity": 0, "subjectivity": 0, "label": "Neutral"}
@@ -24,10 +25,11 @@ class SentimentAnalyzer:
         polarity = analysis.sentiment.polarity
         subjectivity = analysis.sentiment.subjectivity
         
-        # Determine the label based on polarity
-        if polarity > 0.1:
+        # News articles suffer from "Sentiment Dilution" due to objective language.
+        # We tighten the thresholds from 0.10 down to 0.05 to catch subtle tones.
+        if polarity > 0.05:
             label = "Positive"
-        elif polarity < -0.1:
+        elif polarity < -0.05:
             label = "Negative"
         else:
             label = "Neutral"
