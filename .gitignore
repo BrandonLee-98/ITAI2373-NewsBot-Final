@@ -1,0 +1,19 @@
+# Python environment and cache
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Flask/Development specific
+instance/
+.pytest_cache/
+
+# Local configuration (Security)
+config/api_keys.json
+secrets.txt
