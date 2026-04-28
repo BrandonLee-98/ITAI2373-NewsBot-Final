@@ -5,7 +5,7 @@ class NERExtractor:
         self.nlp = spacy.load(model)
 
     def extract_entities(self, text):
-        """Focusing on PERSON, ORG (Organizations), GPE (Locations), and DATE."""
+        """Focusing on PERSON, ORG, GPE, and DATE."""
         doc = self.nlp(text)
         entities = []
         for ent in doc.ents:
