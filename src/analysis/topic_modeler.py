@@ -8,13 +8,8 @@ class NewsTopicModeler:
 
     def train(self, processed_docs):
         """Trains the LDA model on the provided documents."""
-        # Create Dictionary
         self.dictionary = corpora.Dictionary(processed_docs)
-        
-        # Create Corpus
         corpus = [self.dictionary.doc2bow(doc) for doc in processed_docs]
-        
-        # Train LDA
         self.lda_model = models.LdaModel(
             corpus=corpus,
             id2word=self.dictionary,
@@ -24,6 +19,5 @@ class NewsTopicModeler:
 
     def get_topics(self):
         """Returns the top words for each discovered topic."""
-        if not self.lda_model:
-            return "Model not trained."
+        if not self.lda_model: return "Model not trained."
         return self.lda_model.print_topics(num_words=5)
