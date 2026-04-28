@@ -1,1 +1,3 @@
-
+from .language_detector import NewsLanguageDetector
+from .translator import NewsTranslator
+from .cross_lingual_analyzer import CrossLingualAnalyzer
