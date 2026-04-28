@@ -1,65 +1,62 @@
-# 🤖 NewsBot Intelligence System 2.0
-### Advanced NLP Integration and Analysis Platform
-**Course:** ITAI 2373 - Advanced NLP | **Institution:** Houston City College
+# 📰 NewsBot 2.0
 
-## 📝 Project Description
-The **NewsBot Intelligence System 2.0** represents the culmination of the NLP learning journey at **Houston City College**. This project transforms a midterm foundation into a comprehensive, production-ready news analysis platform capable of deep text understanding, multilingual analysis, and intelligent content generation.
-
-As an **up-and-coming developer**, this system demonstrates my ability to move beyond simple text processing into building scalable, modular AI architectures.
+An intelligent AI-driven news analysis platform that provides summarization, sentiment evolution tracking, and entity mapping via a professional web dashboard.
 
 ---
 
-## 🏗️ System Architecture
-The system is composed of four integrated intelligence modules designed for high-performance news analysis:
+## 🚀 Quick Start (Google Colab)
 
-### **Module A: Advanced Content Analysis Engine**
-* **Enhanced Classification**: Multi-level categorization with confidence scoring.
-* **Topic Discovery**: Automatic identification of emerging themes and trends using **LDA** (Latent Dirichlet Allocation).
-* **Sentiment Evolution**: Temporal tracking of emotional tone changes across different timelines.
-* **Entity Relationship Mapping**: Mapping linguistic connections between people, organizations, and events.
+To launch the NewsBot 2.0 environment:
 
-### **Module B: Language Understanding & Generation**
-* **Intelligent Summarization**: Generation of concise, abstractive summaries using **BART Transformers**.
-* **Semantic Search**: Meaning-based retrieval using sentence embeddings and cosine similarity.
-* **Query Understanding**: Processing of natural language questions about specific content.
+1. **Setup:**
+   ```python
+   !git clone [https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git](https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git)
+   %cd ITAI2373-NewsBot-Final
+   !pip install -r requirements.txt --quiet
+   !python -m spacy download en_core_web_sm --quiet
 
-### **Module C: Multilingual Intelligence**
-* **Cross-Language Analysis**: Comparing news coverage across different language sources.
-* **Translation Integration**: Seamless multilingual content access via the Google Translate API.
-* **Language Detection**: Automatic identification of source languages with high precision.
+2. **Launch:**
+   ```python
+   from google.colab.output import eval_js
+   print(eval_js("google.colab.kernel.proxyPort(5000)"))
+   !python app.py
+---
 
-### **Module D: Conversational Interface**
-* **Natural Language Queries**: Interactive exploration (e.g., "Summarize the latest tech news").
-* **Intent Detection**: Identifying user goals to route queries to the correct backend engine.
-* **Live Dashboard**: A professional **Flask-based web interface** for real-time interaction.
+## ✨ Key Features
+
+* **Interactive Dashboard:** Full-stack Flask UI branded for Houston City College.
+* **Sentiment Evolution:** Tracks news emotional trajectory with a calibrated $\pm 0.05$ threshold.
+* **Multilingual Support:** Auto-detection and translation of global news sources.
+* **2026 Ready:** Native support for NumPy 2.0 and the modern AI ecosystem.
 
 ---
 
-## 🛠️ Technical Stack
-* **Language**: Python 3.x
-* **Web Framework**: Flask
-* **NLP Frameworks**: spaCy, NLTK, TextBlob, Gensim
-* **Machine Learning**: Scikit-learn, Hugging Face Transformers, Sentence-Transformers
-* **Data Analysis**: Pandas, NumPy
-* **Visualization**: Matplotlib, Seaborn, Plotly
+## 📚 Documentation
+
+For a deep dive into the architecture, dependency resolutions (NumPy 2.0 / Translation Wrapper), and module logic, please see:
+👉 **[TECHNICAL_DOCUMENTATION.md](./technical_doc.md)**
 
 ---
 
-## 🚀 Getting Started
+## 🧰 Tech Stack
 
-### 1. Prerequisites
-Ensure you have the required dependencies installed:
-```bash
-pip install -r requirements.txt
-python -m spacy download en_core_web_sm
-```
+* **Backend:** Flask, Python 3.12+
+* **AI/NLP:** spaCy, Transformers, TextBlob, NLTK
+* **Data:** NumPy 2.0+, SciPy 1.14+, Pandas 2.0+
+
 ---
 
-## 👨‍💻 Author & Acknowledgments
-* **Developer:** Brandon Matias
-* **Email:** bmatias98@outlook.com
-* **LinkedIn:** [linkedin.com/in/brandonmatias](https://www.linkedin.com/in/brandonmatias)
-* **Academic Institution:** Houston City College
+## 👨‍💻 Author
+
+**Brandon Matias** | Houston City College  
+**Email:** [bmatias98@outlook.com](mailto:bmatias98@outlook.com)  
+**LinkedIn:** [linkedin.com/in/brandonmatias](https://www.linkedin.com/in/brandonmatias)
+
+---
+
+## 💡 Academic Context
+
+Final capstone project for **ITAI 2373**. Satisfies all requirements for Modules A, B, and C, with bonus implementations for web deployment and multilingual processing.
 
 ---
 
