@@ -4,7 +4,7 @@ from .data_processing.text_preprocessor import TextPreprocessor
 # --- Analysis Engine (Module A) ---
 from .analysis.classifier import NewsClassifier
 from .analysis.sentiment_analyzer import SentimentAnalyzer
-from .analysis.topic_modeler import TopicDiscoveryEngine
+from .analysis.topic_modeler import TopicModeler
 from .analysis.ner_extractor import EntityRelationshipMapper
 
 # --- Language Models (Module B) ---
