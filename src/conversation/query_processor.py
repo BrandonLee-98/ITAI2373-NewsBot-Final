@@ -1,6 +1,6 @@
 import re
 from src import (
-    NewsClassifier, SentimentAnalyzer, IntelligentSummarizer, 
+    NewsClassifier, SentimentAnalyzer, Summarizer, 
     SemanticSearchEngine, NewsLanguageDetector, NewsTranslator
 )
 
@@ -8,7 +8,7 @@ class QueryProcessor:
     def __init__(self, classifier_path=None):
         self.classifier = NewsClassifier(classifier_path)
         self.sentiment = SentimentAnalyzer()
-        self.summarizer = IntelligentSummarizer()
+        self.summarizer = Summarizer()
         self.search_engine = SemanticSearchEngine()
         self.detector = NewsLanguageDetector()
         self.translator = NewsTranslator()
