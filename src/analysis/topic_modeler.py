@@ -1,6 +1,6 @@
 from gensim import corpora, models
 
-class NewsTopicModeler:
+class TopicModeler:
     def __init__(self, num_topics=5):
         self.num_topics = num_topics
         self.dictionary = None
