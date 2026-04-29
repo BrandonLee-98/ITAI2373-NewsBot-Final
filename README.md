@@ -8,18 +8,35 @@ An intelligent AI-driven news analysis platform that provides summarization, sen
 
 To launch the NewsBot 2.0 environment:
 
-1. **Setup:**
+1. **Paste the code below in Colab to run NewsBot 2.0:**
+   
    ```python
-   !git clone [https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git](https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git)
-   %cd ITAI2373-NewsBot-Final
-   !pip install -r requirements.txt --quiet
-   !python -m spacy download en_core_web_sm --quiet
+   import os
+   import shutil
 
-2. **Launch:**
-   ```python
-   from google.colab.output import eval_js
-   print(eval_js("google.colab.kernel.proxyPort(5000)"))
-   !python app.py
+   # 1. CLEAN UP: Remove existing folder to avoid "already exists" errors
+   repo_name = "ITAI2373-NewsBot-Final"
+   if os.path.exists(repo_name):
+       shutil.rmtree(repo_name)
+
+   # 2. CLONE: Download your repository [cite: 71, 296]
+   !git clone https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git
+
+   # 3. CHANGE DIRECTORY: This is the critical step you likely missed
+   %cd {repo_name}
+
+   # 4. VERIFY: List files to ensure requirements.txt and app.py are present [cite: 76, 222]
+   print("\n📂 Current Directory Files:")
+   !ls
+
+   # 5. INSTALL: Run the requirements installation [cite: 76, 77]
+   if os.path.exists("requirements.txt"):
+       !pip install -r requirements.txt --quiet
+       !python -m spacy download en_core_web_sm --quiet
+       print("\n✅ Environment ready.")
+   else:
+       print("\n❌ Error: requirements.txt not found. Check your repository structure.")
+
 ---
 
 ## ✨ Key Features
