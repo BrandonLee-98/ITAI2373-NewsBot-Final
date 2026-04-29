@@ -21,7 +21,7 @@
 <nav class="navbar navbar-dark mb-4">
     <div class="container">
         <span class="navbar-brand mb-0 h1">🏗️ NewsBot Intelligence System 2.0</span>
-        <span class="text-white-50">Author: Brandon Matias | HCC</span>
+        <span class="text-white-50">Author: Brandon Matias | Houston City College</span>
     </div>
 </nav>
 
@@ -47,7 +47,7 @@
             <div id="loading-state" class="text-center p-4">
                 <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
                 <h4 class="mt-3 text-primary">Executing NLP Pipeline...</h4>
-                <p class="text-muted">Extracting entities, calculating sentiment, and generating summaries.</p>
+                <p class="text-muted">Extracting entities, calculating sentiment, running LDA clusters, and generating summaries.</p>
             </div>
 
             <div id="analysis-results" class="result-box">
@@ -69,6 +69,10 @@
                     <hr>
                     <h5>Identified Entities</h5>
                     <div id="res-entities" class="d-flex flex-wrap gap-2"></div>
+                    <hr>
+                    <h5>🧠 Behind the Scenes: LDA Clusters</h5>
+                    <p class="text-muted small mb-2">The Latent Dirichlet Allocation (LDA) model grouped the article's vocabulary into these raw statistical themes:</p>
+                    <div id="res-topics" class="d-flex flex-column gap-1"></div>
                 </div>
             </div>
         </div>
@@ -91,9 +95,9 @@
 <script>
     // Sample Article Library
     const samples = {
-        legal: "Section 2 imposes liability only when the evidence supports a strong inference that the state intentionally drew its districts to afford minority voters less opportunity because of their race. Not only does this interpretation follow from the plain text of §2, but it is consistent with the limited authority that the Fifteenth Amendment confers.",
-        tech: "OpenAI announced today the release of a new artificial intelligence model designed to significantly improve logical reasoning capabilities. The technology sector responded positively, with major infrastructure providers seeing immediate stock gains.",
-        finance: "The Federal Reserve indicated it will hold interest rates steady through the summer of 2026. Markets rallied on the news, with the S&P 500 hitting a record high as inflation fears continued to subside across global markets."
+        legal: "Section 2 imposes liability only when the evidence supports a strong inference that the state intentionally drew its districts to afford minority voters less opportunity because of their race. Not only does this interpretation follow from the plain text of §2, but it is consistent with the limited authority that the Fifteenth Amendment confers. For this reason, the focus of §2 must be enforcement of the Fifteenth Amendment’s prohibition on intentional racial discrimination. When §2 is properly interpreted in the way we have outlined, it is sufficiently congruent with and proportional to the Amendment’s prohibition.",
+        tech: "OpenAI announced today the release of a new artificial intelligence model designed to significantly improve logical reasoning capabilities. The technology sector responded positively, with major infrastructure providers seeing immediate stock gains. Analysts believe this new architecture will pave the way for more autonomous agents capable of handling complex, multi-step workflows without human intervention. The release comes amid intensifying competition in the generative AI space.",
+        finance: "The Federal Reserve indicated it will hold interest rates steady through the summer of 2026. Markets rallied on the news, with the S&P 500 hitting a record high as inflation fears continued to subside across global markets. Investors are increasingly optimistic about a soft landing, pointing to resilient consumer spending and a stabilizing housing market as key indicators of economic health. However, some economists warn that underlying pressures remain."
     };
 
     function loadSample(type) {
@@ -131,62 +135,4 @@
             
             // Simple color coding based on text
             if(sentVal.toLowerCase().includes('positiv')) { sentBadge.className = 'badge badge-sentiment bg-success'; }
-            else if(sentVal.toLowerCase().includes('negativ')) { sentBadge.className = 'badge badge-sentiment bg-danger'; }
-            else { sentBadge.className = 'badge badge-sentiment bg-secondary'; }
-
-            // Handle Entities
-            const entityBox = document.getElementById('res-entities');
-            if (Array.isArray(data.entities) && data.entities.length > 0) {
-                entityBox.innerHTML = data.entities.map(e => {
-                    const text = e.text || e[0] || 'Unknown';
-                    const label = e.label || e[1] || 'Entity';
-                    return `<span class="badge bg-dark">${text} <span class="text-warning">(${label})</span></span>`;
-                }).join('');
-            } else {
-                entityBox.innerHTML = '<span class="text-muted fst-italic">No major entities detected.</span>';
-            }
-
-            // Show results
-            document.getElementById('loading-state').style.display = 'none';
-            document.getElementById('analysis-results').style.display = 'block';
-
-        } catch (error) {
-            console.error("Analysis Error:", error);
-            alert("An error occurred while processing the article. Check the console for details.");
-            document.getElementById('loading-state').style.display = 'none';
-        } finally {
-            document.getElementById('analyze-btn').disabled = false;
-        }
-    }
-
-    async function sendQuery() {
-        const queryInput = document.getElementById('user-query');
-        const chatWindow = document.getElementById('chat-window');
-        const articleText = document.getElementById('article-text').value; // Grab context
-        const query = queryInput.value;
-
-        if (!query) return;
-
-        chatWindow.innerHTML += `<div class="text-end mb-2"><span class="bg-primary text-white p-2 rounded d-inline-block">${query}</span></div>`;
-        queryInput.value = '';
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-
-        try {
-            const response = await fetch('/query', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                // Now sending BOTH query and context to the backend
-                body: JSON.stringify({ query: query, context: articleText }) 
-            });
-
-            const data = await response.json();
-            chatWindow.innerHTML += `<div class="text-start mb-2"><span class="bg-light border p-2 rounded d-inline-block text-dark"><strong>NewsBot:</strong><br>${data.response}</span></div>`;
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        } catch (error) {
-            chatWindow.innerHTML += `<div class="text-start mb-2"><span class="bg-danger text-white p-2 rounded d-inline-block">System Error: Could not reach chatbot.</span></div>`;
-        }
-    }
-</script>
-
-</body>
-</html>
+            else if(sentVal.toLowerCase().includes('negativ
