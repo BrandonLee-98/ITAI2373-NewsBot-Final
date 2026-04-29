@@ -9,6 +9,7 @@ from src.analysis.ner_extractor import EntityRelationshipMapper
 # Language Models & Conversation Imports
 from src.language_models.summarizer import Summarizer
 from src.conversation.query_processor import QueryProcessor
+from src.multilingual.language_detector import NewsLanguageDetector
 
 app = Flask(__name__)
 app.secret_key = 'newsbot-2026-secure-key'
@@ -20,6 +21,7 @@ sentiment_analyzer = SentimentAnalyzer()
 entity_mapper = EntityRelationshipMapper()
 summarizer = Summarizer()
 query_processor = QueryProcessor()
+language_detector = NewsLanguageDetector()
 
 @app.route('/')
 def dashboard():
@@ -36,13 +38,14 @@ def analyze_article():
         return jsonify({'error': 'No text provided'}), 400
 
     try:
-        # Call each specialized module
+        # Call each specialized module [cite: 18, 19, 21, 23]
         results = {
             'classification': classifier.predict(article_text),
             'sentiment': sentiment_analyzer.get_sentiment_metrics(article_text),
             'entities': entity_mapper.extract_entities(article_text),
             'topics': topic_modeler.get_article_topics(article_text) if hasattr(topic_modeler, 'get_article_topics') else topic_modeler.get_topic_words(0), 
-            'summary': summarizer.summarize(article_text)
+            'summary': summarizer.summarize(article_text),
+            'language': language_detector.identify_language(article_text).upper() # Integration of Module C 
         }
         return jsonify(results)
     
@@ -61,7 +64,7 @@ def process_query():
          return jsonify({'error': 'No query provided'}), 400
 
     try:
-        # Pass the query and the article text separately to the new model
+        # Pass the query and the article text separately to the new model [cite: 71, 148]
         response = query_processor.process(user_query, context=article_context)
         return jsonify({'response': response})
         
