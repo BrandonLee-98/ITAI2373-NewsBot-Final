@@ -7,5 +7,5 @@ Original file is located at
     https://colab.research.google.com/drive/1g2SXVzotdMKHFhh1PDgtCYZhe95mC3l1
 """
 
-from .summarizer import IntelligentSummarizer
+from .summarizer import Summarizer
 from .semantic_search import SemanticSearchEngine
