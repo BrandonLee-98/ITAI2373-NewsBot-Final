@@ -1,1 +1,181 @@
+from weasyprint import HTML
 
+# Define the HTML content for the Presentation Slides
+# We use CSS to force each section onto a new page with a landscape aspect ratio
+html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: 297mm 210mm; /* Landscape A4 */
+            margin: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+        }
+        .slide {
+            width: 297mm;
+            height: 210mm;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            background: linear-gradient(135deg, #fdfdfd 0%, #f0f4f8 100%);
+        }
+        .title-slide {
+            background-color: #1a3a5f;
+            color: white;
+            justify-content: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            font-size: 48pt;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .title-slide h2 {
+            font-size: 24pt;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        .slide-header {
+            border-bottom: 3px solid #1a3a5f;
+            margin-bottom: 30px;
+        }
+        .slide-header h2 {
+            font-size: 32pt;
+            color: #1a3a5f;
+            margin: 0;
+            padding-bottom: 10px;
+        }
+        .content {
+            flex-grow: 1;
+            font-size: 18pt;
+        }
+        .content ul {
+            list-style-type: square;
+        }
+        .content li {
+            margin-bottom: 15px;
+        }
+        .highlight {
+            color: #2980b9;
+            font-weight: bold;
+        }
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 60px;
+            right: 60px;
+            font-size: 12pt;
+            color: #7f8c8d;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .two-column {
+            display: flex;
+            gap: 40px;
+        }
+        .column {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide title-slide">
+        <h1>NewsBot Intelligence System 2.0</h1>
+        <h2>Advanced NLP Integration & Analysis Platform</h2>
+        <p style="margin-top: 40px; font-size: 18pt;">Presented by: <strong>Brandon Matias</strong></p>
+        <p style="font-size: 14pt;">Houston City College | AI & Robotics | ITAI 2373</p>
+    </div>
+
+    <div class="slide">
+        <div class="slide-header"><h2>Project Vision & Scope</h2></div>
+        <div class="content">
+            <p>Moving from the Midterm prototype to a <span class="highlight">Production-Ready AI Platform</span>.</p>
+            <ul>
+                <li><strong>Sophisticated Analysis:</strong> Transition from simple keyword matching to deep semantic understanding.</li>
+                <li><strong>Global Connectivity:</strong> Breaking language barriers via automated multilingual workflows.</li>
+                <li><strong>User-Centric Design:</strong> Interactive dashboards and conversational interfaces for non-technical stakeholders.</li>
+                <li><strong>2026 Readiness:</strong> Optimized for modern binaries (NumPy 2.0) and scalable architecture.</li>
+            </ul>
+        </div>
+        <div class="footer"><span>NewsBot 2.0</span><span>Slide 2</span></div>
+    </div>
+
+    <div class="slide">
+        <div class="slide-header"><h2>Four Integrated Modules</h2></div>
+        <div class="content">
+            <div class="two-column">
+                <div class="column">
+                    <p class="highlight">Module A: Content Analysis</p>
+                    <p style="font-size: 14pt;">LDA/NMF Topic Modeling, Sentiment Evolution, and Entity Mapping.</p>
+                    
+                    <p class="highlight">Module B: Language Understanding</p>
+                    <p style="font-size: 14pt;">Intelligent Summarization, Semantic Search, and Contextual Enhancement.</p>
+                </div>
+                <div class="column">
+                    <p class="highlight">Module C: Multilingual Intelligence</p>
+                    <p style="font-size: 14pt;">Language Detection, Seamless Translation, and Cross-Lingual Analysis.</p>
+                    
+                    <p class="highlight">Module D: Conversational Interface</p>
+                    <p style="font-size: 14pt;">Natural Language Query Processing and Intent Classification.</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer"><span>NewsBot 2.0</span><span>Slide 3</span></div>
+    </div>
+
+    <div class="slide">
+        <div class="slide-header"><h2>Overcoming Engineering Hurdles</h2></div>
+        <div class="content">
+            <ul>
+                <li><strong>NumPy 2.0 Binary Crisis:</strong> Engineered a compatibility bridge for legacy NLP models to run on the 2026 Python ecosystem.</li>
+                <li><strong>API Dependency Wrapper:</strong> Developed a custom 'googletrans' replacement using <i>deep-translator</i> to bypass library version locks.</li>
+                <li><strong>Sentiment Calibration:</strong> Tightened thresholds to &pm; 0.05 to capture tone in objective journalistic text.</li>
+                <li><strong>Scalable Deployment:</strong> Native support for Docker and Heroku cloud environments.</li>
+            </ul>
+        </div>
+        <div class="footer"><span>NewsBot 2.0</span><span>Slide 4</span></div>
+    </div>
+
+    <div class="slide">
+        <div class="slide-header"><h2>Driving Business Value</h2></div>
+        <div class="content">
+            <p>Automating the cognitive load of high-volume monitoring.</p>
+            <ul>
+                <li><strong>80% Time Reduction:</strong> From hours of manual synthesis to <span class="highlight">Instant Insights</span>.</li>
+                <li><strong>Increased Scale:</strong> Capable of monitoring 500+ global sources simultaneously.</li>
+                <li><strong>Risk Mitigation:</strong> Real-time detection of negative sentiment breakouts and cultural bias.</li>
+                <li><strong>Quantified Savings:</strong> Estimated <strong>$45k+ labor savings</strong> per automated analyst role.</li>
+            </ul>
+        </div>
+        <div class="footer"><span>NewsBot 2.0</span><span>Slide 5</span></div>
+    </div>
+
+    <div class="slide title-slide">
+        <h1>Questions?</h1>
+        <p style="margin-top: 20px; font-size: 24pt;">Thank you for your time.</p>
+        <div style="margin-top: 40px; font-size: 14pt;">
+            <p>Brandon Matias | bmatias98@outlook.com</p>
+            <p>linkedin.com/in/brandonmatias</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# Save and convert
+output_pdf = "FP_Presentation_BrandonMatias_TeamAlpha_ITAI2373.pdf"
+HTML(string=html_content).write_pdf(output_pdf)
+
+print(f"File generated: {presentation_slides.pdf}")
