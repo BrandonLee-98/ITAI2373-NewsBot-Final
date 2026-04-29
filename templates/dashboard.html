@@ -3,63 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsBot 2.0 | Dashboard</title>
+    <title>NewsBot 2.0 | Intelligence Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f4f7f6; }
-        .hero-section { 
-            background: linear-gradient(135deg, #002d5a 0%, #004a99 100%); 
-            color: white; 
-            padding: 80px 0; 
-            margin-bottom: 40px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .card { border: none; border-radius: 15px; }
-        .btn-primary { background-color: #002d5a; border: none; }
-        .btn-primary:hover { background-color: #004a99; }
+        body { background-color: #f8f9fa; font-family: 'Inter', sans-serif; }
+        .navbar { background-color: #1a3a5f; }
+        .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 12px; }
+        .btn-primary { background-color: #1a3a5f; border: none; }
+        .result-box { display: none; margin-top: 20px; }
+        .badge-sentiment { font-size: 1rem; padding: 8px 12px; }
+        #chat-window { height: 300px; overflow-y: auto; background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-<div class="hero-section text-center">
+<nav class="navbar navbar-dark mb-4">
     <div class="container">
-        <h1 class="display-4 fw-bold">🤖 NewsBot Intelligence 2.0</h1>
-        <p class="lead">Advanced NLP Analysis Tool for Modern Media</p>
+        <span class="navbar-brand mb-0 h1">🏗️ NewsBot Intelligence System 2.0</span>
+        <span class="text-white-50">Author: Brandon Matias | HCC</span>
     </div>
-</div>
+</nav>
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-9">
-            <div class="card shadow-lg">
-                <div class="card-body p-5">
-                    <h5 class="card-title mb-4">Content Analysis Engine</h5>
-                    
-                    <form action="/analyze" method="POST">
-                        <div class="mb-4">
-                            <label for="article_text" class="form-label fw-bold text-muted small uppercase">Paste News Article or Data Below</label>
-                            
-                            <textarea class="form-control" id="article_text" name="article_text" rows="12" 
-                                      placeholder="Paste your text here to generate an AI summary and sentiment report..." 
-                                      required style="border-radius: 10px;"></textarea>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-4 mb-4">
+                <h3>📰 News Analysis Engine</h3>
+                <p class="text-muted">Paste a news article below to trigger the NLP pipeline.</p>
+                <textarea id="article-text" class="form-control mb-3" rows="10" placeholder="Paste article content here..."></textarea>
+                <button onclick="analyzeArticle()" class="btn btn-primary btn-lg">Run Analysis</button>
+            </div>
+
+            <div id="analysis-results" class="result-box">
+                <div class="card p-4">
+                    <h3 class="border-bottom pb-2">📊 Intelligence Report</h3>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h5>Category</h5>
+                            <p id="res-category" class="fw-bold text-primary"></p>
                         </div>
-                        
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
-                                Run Intelligence Analysis →
-                            </button>
+                        <div class="col-md-6">
+                            <h5>Sentiment Tonality</h5>
+                            <span id="res-sentiment" class="badge badge-sentiment"></span>
                         </div>
-                    </form>
+                    </div>
+                    <hr>
+                    <h5>Executive Summary</h5>
+                    <p id="res-summary" class="fst-italic text-muted"></p>
+                    <hr>
+                    <h5>Identified Entities</h5>
+                    <div id="res-entities" class="d-flex flex-wrap gap-2"></div>
                 </div>
             </div>
-            
-            <div class="text-center mt-5 text-muted">
-                <p class="small">System Architecture: Python Flask | Transformers | spaCy</p>
-                <p class="small">&copy; 2026 Up-and-Coming Developer Portfolio</p>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h3>💬 NewsBot Chat</h3>
+                <div id="chat-window" class="mb-3">
+                    <p class="text-muted">Ask me a question about the news...</p>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="user-query" class="form-control" placeholder="Type query...">
+                    <button onclick="sendQuery()" class="btn btn-outline-primary">Send</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    async function analyzeArticle() {
+        const text = document.getElementById('article-text').value;
+        const resultsDiv = document.getElementById('analysis-results');
+        
+        if (!text) return alert("Please paste an article first.");
+
+        const response = await fetch('/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+
+        const data = await response.json();
+        
+        // Populate UI
+        document.getElementById('res-category').innerText = data.classification;
+        document.getElementById('res-summary').innerText = data.summary;
+        
+        const sentBadge = document.getElementById('res-sentiment');
+        sentBadge.innerText = data.sentiment.label || "Neutral";
+        sentBadge.className = `badge badge-sentiment ${data.sentiment.score > 0 ? 'bg-success' : 'bg-danger'}`;
+
+        const entityBox = document.getElementById('res-entities');
+        entityBox.innerHTML = data.entities.map(e => `<span class="badge bg-secondary">${e.text} (${e.label})</span>`).join('');
+
+        resultsDiv.style.display = 'block';
+    }
+
+    async function sendQuery() {
+        const queryInput = document.getElementById('user-query');
+        const chatWindow = document.getElementById('chat-window');
+        const query = queryInput.value;
+
+        if (!query) return;
+
+        chatWindow.innerHTML += `<p><strong>You:</strong> ${query}</p>`;
+        queryInput.value = '';
+
+        const response = await fetch('/query', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query })
+        });
+
+        const data = await response.json();
+        chatWindow.innerHTML += `<p class="text-primary"><strong>NewsBot:</strong> ${data.response}</p>`;
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+</script>
 
 </body>
 </html>
