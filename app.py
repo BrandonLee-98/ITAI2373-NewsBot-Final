@@ -61,15 +61,8 @@ def process_query():
          return jsonify({'error': 'No query provided'}), 400
 
     try:
-        # Combine context and query so the bot knows what it is analyzing
-        # This prevents needing to rewrite the QueryProcessor's arguments
-        if article_context:
-            prompt = f"Based on the following article:\n{article_context}\n\nAnswer this question: {user_query}"
-        else:
-            prompt = user_query
-
-        # Process the user's intent and generate a response
-        response = query_processor.process(prompt)
+        # Pass the query and the article text separately to the new model
+        response = query_processor.process(user_query, context=article_context)
         return jsonify({'response': response})
         
     except Exception as e:
