@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify
 
 # Core Analysis Imports
 from src.analysis.classifier import NewsClassifier
@@ -13,7 +13,7 @@ from src.conversation.query_processor import QueryProcessor
 app = Flask(__name__)
 app.secret_key = 'newsbot-2026-secure-key'
 
-# Initialize all NLP components separately to maintain modular design
+# Initialize all NLP components separately
 classifier = NewsClassifier()
 topic_modeler = TopicModeler()
 sentiment_analyzer = SentimentAnalyzer()
@@ -35,30 +35,46 @@ def analyze_article():
     if not article_text:
         return jsonify({'error': 'No text provided'}), 400
 
-    # Perform comprehensive analysis using the specialized modules
-    results = {
-        'classification': classifier.predict(article_text),
-        'sentiment': sentiment_analyzer.get_sentiment_metrics(article_text),
-        'entities': entity_mapper.extract_entities(article_text),
-        'topics': topic_modeler.get_article_topics(article_text) if hasattr(topic_modeler, 'get_article_topics') else topic_modeler.get_topic_words(0), 
-        'summary': summarizer.summarize(article_text)
-    }
+    try:
+        # Call each specialized module
+        results = {
+            'classification': classifier.predict(article_text),
+            'sentiment': sentiment_analyzer.get_sentiment_metrics(article_text),
+            'entities': entity_mapper.extract_entities(article_text),
+            'topics': topic_modeler.get_article_topics(article_text) if hasattr(topic_modeler, 'get_article_topics') else topic_modeler.get_topic_words(0), 
+            'summary': summarizer.summarize(article_text)
+        }
+        return jsonify(results)
     
-    return jsonify(results)
+    except Exception as e:
+        print(f"Pipeline Error: {e}")
+        return jsonify({'error': 'An error occurred during analysis.'}), 500
 
 @app.route('/query', methods=['POST'])
 def process_query():
-    """Handles natural language interaction via the conversational interface."""
+    """Handles natural language interaction for the chatbot."""
     data = request.json
     user_query = data.get('query', '')
+    article_context = data.get('context', '')
     
     if not user_query:
          return jsonify({'error': 'No query provided'}), 400
 
-    # Process the user's intent and generate a response
-    response = query_processor.process(user_query)
-    
-    return jsonify({'response': response})
+    try:
+        # Combine context and query so the bot knows what it is analyzing
+        # This prevents needing to rewrite the QueryProcessor's arguments
+        if article_context:
+            prompt = f"Based on the following article:\n{article_context}\n\nAnswer this question: {user_query}"
+        else:
+            prompt = user_query
+
+        # Process the user's intent and generate a response
+        response = query_processor.process(prompt)
+        return jsonify({'response': response})
+        
+    except Exception as e:
+        print(f"Chatbot Error: {e}")
+        return jsonify({'response': 'Sorry, I ran into an issue answering that. Please try again.'})
 
 if __name__ == '__main__':
     # Set host to '0.0.0.0' to ensure it runs correctly within Google Colab
