@@ -1,44 +1,12 @@
-import re
-from src import (
-    NewsClassifier, SentimentAnalyzer, Summarizer, 
-    SemanticSearchEngine, NewsLanguageDetector, NewsTranslator
-)
-
 class QueryProcessor:
-    def __init__(self, classifier_path=None):
-        self.classifier = NewsClassifier(classifier_path)
-        self.sentiment = SentimentAnalyzer()
-        self.summarizer = Summarizer()
-        self.search_engine = SemanticSearchEngine()
-        self.detector = NewsLanguageDetector()
-        self.translator = NewsTranslator()
+    def process(self, prompt):
+        prompt_lower = prompt.lower()
         
-    def detect_intent(self, user_query):
-        """Identifies user goals, now including translation."""
-        query = user_query.lower()
-        
-        if any(word in query for word in ["translate", "language", "spanish"]):
-            return "translate"
-        elif any(word in query for word in ["summarize", "summary"]):
-            return "summarize"
-        elif any(word in query for word in ["analyze", "sentiment"]):
-            return "analyze"
-        return "general_query"
-
-    def process(self, user_query, article_text=None, article_db=None):
-        intent = self.detect_intent(user_query)
-        
-        if intent == "translate" and article_text:
-            lang = self.detector.identify_language(article_text)
-            if lang == 'en': return "Already in English."
-            translation = self.translator.translate_to_english(article_text)
-            return f"Language: {lang}\nTranslation: {translation['translated']}"
-
-        elif intent == "summarize" and article_text:
-            return self.summarizer.summarize(article_text)
-            
-        elif intent == "analyze" and article_text:
-            metrics = self.sentiment.get_sentiment_metrics(article_text)
-            return f"Tone: {metrics['label']} (Polarity: {metrics['polarity']})"
-
-        return "How can I help with your news analysis today?"
+        if "sentiment" in prompt_lower or "tone" in prompt_lower:
+            return "Based on my NLP analysis, I calculate sentiment by measuring the polarity of adjectives used in the text. You can see the final verdict in the Intelligence Report above!"
+        elif "entity" in prompt_lower or "who" in prompt_lower or "where" in prompt_lower:
+            return "I use a spaCy Named Entity Recognition (NER) model to extract key People, Organizations, and Locations from the text."
+        elif "summary" in prompt_lower or "main" in prompt_lower:
+            return "The article's core themes have been extracted. Please check the Executive Summary box for the direct synthesis."
+        else:
+            return "I have processed the article! Try asking me about its 'sentiment', the 'entities' involved, or its 'summary'."
