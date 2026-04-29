@@ -130,3 +130,7 @@ ITAI2373-NewsBot-Final/
 │   └── dashboard.html      # User Interface
 └── docs/                   # Documentation folder
     └── individual_contributions.md # Individual contribution summary
+```
+---
+## 🤝 Individual Contributions
+**Brandon Matias**: Project Lead. Designed and implemented the complete NLP pipeline (Zero-Shot Classification, Abstractive Summarization, NER, LDA Topic Modeling), integrated the Hugging Face Extractive QA conversational interface, implemented multilingual detection and translation architectures, and developed the Flask/Bootstrap web dashboard.
