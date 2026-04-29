@@ -8,7 +8,7 @@ from .analysis.topic_modeler import TopicModeler
 from .analysis.ner_extractor import EntityRelationshipMapper
 
 # --- Language Models (Module B) ---
-from .language_models.summarizer import IntelligentSummarizer
+from .language_models.summarizer import Summarizer
 from .language_models.semantic_search import SemanticSearchEngine
 
 # --- Multilingual Intelligence (Module C) ---
