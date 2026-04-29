@@ -56,7 +56,10 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <h5>Category</h5>
-                            <p id="res-category" class="fw-bold text-primary fs-5"></p>
+                            <div class="d-flex align-items-center mb-2">
+                                <p id="res-category" class="fw-bold text-primary fs-5 m-0"></p>
+                                <span id="res-confidence" class="badge bg-info text-dark ms-2" style="display: none;"></span>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <h5>Sentiment Tonality</h5>
@@ -124,8 +127,19 @@
 
             const data = await response.json();
             
-            // Defensive population (Handles strings or objects)
-            document.getElementById('res-category').innerText = typeof data.classification === 'object' ? (data.classification.label || 'Uncategorized') : (data.classification || 'Uncategorized');
+            // Handle Classification & Confidence Score
+            const catLabel = typeof data.classification === 'object' ? (data.classification.label || 'Uncategorized') : (data.classification || 'Uncategorized');
+            document.getElementById('res-category').innerText = catLabel;
+            
+            const confBadge = document.getElementById('res-confidence');
+            if (typeof data.classification === 'object' && data.classification.confidence) {
+                confBadge.innerText = `${data.classification.confidence}% Match`;
+                confBadge.style.display = 'inline-block';
+            } else {
+                confBadge.style.display = 'none';
+            }
+            
+            // Handle Summary
             document.getElementById('res-summary').innerText = data.summary || 'No summary generated.';
             
             // Handle Sentiment
@@ -135,4 +149,69 @@
             
             // Simple color coding based on text
             if(sentVal.toLowerCase().includes('positiv')) { sentBadge.className = 'badge badge-sentiment bg-success'; }
-            else if(sentVal.toLowerCase().includes('negativ
+            else if(sentVal.toLowerCase().includes('negativ')) { sentBadge.className = 'badge badge-sentiment bg-danger'; }
+            else { sentBadge.className = 'badge badge-sentiment bg-secondary'; }
+
+            // Handle Entities
+            const entityBox = document.getElementById('res-entities');
+            if (Array.isArray(data.entities) && data.entities.length > 0) {
+                entityBox.innerHTML = data.entities.map(e => {
+                    const text = e.text || e[0] || 'Unknown';
+                    const label = e.label || e[1] || 'Entity';
+                    return `<span class="badge bg-dark">${text} <span class="text-warning">(${label})</span></span>`;
+                }).join('');
+            } else {
+                entityBox.innerHTML = '<span class="text-muted fst-italic">No major entities detected.</span>';
+            }
+
+            // Handle LDA Topics
+            const topicBox = document.getElementById('res-topics');
+            if (Array.isArray(data.topics) && data.topics.length > 0 && !data.topics[0].includes("too short")) {
+                topicBox.innerHTML = data.topics.map(t => `<span class="badge bg-light text-dark border border-secondary text-start p-2">${t}</span>`).join('');
+            } else {
+                topicBox.innerHTML = '<span class="text-muted fst-italic small">Insufficient text depth for statistical LDA clustering.</span>';
+            }
+
+            // Show results
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('analysis-results').style.display = 'block';
+
+        } catch (error) {
+            console.error("Analysis Error:", error);
+            alert("An error occurred while processing the article. Check the console for details.");
+            document.getElementById('loading-state').style.display = 'none';
+        } finally {
+            document.getElementById('analyze-btn').disabled = false;
+        }
+    }
+
+    async function sendQuery() {
+        const queryInput = document.getElementById('user-query');
+        const chatWindow = document.getElementById('chat-window');
+        const articleText = document.getElementById('article-text').value; // Grab context
+        const query = queryInput.value;
+
+        if (!query) return;
+
+        chatWindow.innerHTML += `<div class="text-end mb-2"><span class="bg-primary text-white p-2 rounded d-inline-block">${query}</span></div>`;
+        queryInput.value = '';
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        try {
+            const response = await fetch('/query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query, context: articleText }) 
+            });
+
+            const data = await response.json();
+            chatWindow.innerHTML += `<div class="text-start mb-2"><span class="bg-light border p-2 rounded d-inline-block text-dark"><strong>NewsBot:</strong><br>${data.response}</span></div>`;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        } catch (error) {
+            chatWindow.innerHTML += `<div class="text-start mb-2"><span class="bg-danger text-white p-2 rounded d-inline-block">System Error: Could not reach chatbot.</span></div>`;
+        }
+    }
+</script>
+
+</body>
+</html>
