@@ -34,7 +34,7 @@ To launch the NewsBot 2.0 environment:
 ## 📚 Documentation
 
 For a deep dive into the architecture, dependency resolutions (NumPy 2.0 / Translation Wrapper), and module logic, please see:
-👉 **[TECHNICAL_DOCUMENTATION.md](./technical_doc.md)**
+👉 **[TECHNICAL_DOCUMENTATION.md](./technical_documentation.md)**
 
 ---
 
