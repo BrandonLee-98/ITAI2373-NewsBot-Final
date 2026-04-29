@@ -1,7 +1,7 @@
 import spacy
 from transformers import pipeline
 
-class IntelligentSummarizer:
+class Summarizer:
     """
     Advanced text summarization system.
     Supports both extractive and abstractive summarization strategies.
