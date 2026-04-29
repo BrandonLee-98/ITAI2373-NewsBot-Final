@@ -1,97 +1,132 @@
-# 📰 NewsBot 2.0
+# 📰 NewsBot Intelligence System 2.0
+**Advanced NLP Integration and Analysis Platform**
 
-An intelligent AI-driven news analysis platform that provides summarization, sentiment evolution tracking, and entity mapping via a professional web dashboard.
-
----
-
-## 🚀 Quick Start (Google Colab)
-
-To launch the NewsBot 2.0 environment:
-
-1. **Paste the code below in Colab to setup the NewsBot 2.0:**
-   
-   ```python
-   import os
-   import shutil
-
-   # 1. CLEAN UP: Remove existing folder to avoid "already exists" errors
-   repo_name = "ITAI2373-NewsBot-Final"
-   if os.path.exists(repo_name):
-       shutil.rmtree(repo_name)
-
-   # 2. CLONE: Download your repository [cite: 71, 296]
-   !git clone https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git
-
-   # 3. CHANGE DIRECTORY: This is the critical step you likely missed
-   %cd {repo_name}
-
-   # 4. VERIFY: List files to ensure requirements.txt and app.py are present [cite: 76, 222]
-   print("\n📂 Current Directory Files:")
-   !ls
-
-   # 5. INSTALL: Run the requirements installation [cite: 76, 77]
-   if os.path.exists("requirements.txt"):
-       !pip install -r requirements.txt --quiet
-       !python -m spacy download en_core_web_sm --quiet
-       print("\n✅ Environment ready.")
-   else:
-       print("\n❌ Error: requirements.txt not found. Check your repository structure.")
-
-2. **Paste the code below to run the program:**
-   ```python
-   from google.colab.output import eval_js
-   print(f"Click here to open your Dashboard: {eval_js('google.colab.kernel.proxyPort(5000)')}")
-
-   # This will now find app.py because you are in the correct folder
-   !python app.py
+**Author:** Brandon Matias  
+**Institution:** Houston City College  
+**Contact:** bmatias98@outlook.com | [LinkedIn](www.linkedin.com/in/brandonmatias)
 
 ---
 
-## ✨ Key Features
+## 📖 Comprehensive Project Overview
 
-* **Interactive Dashboard:** Full-stack Flask UI branded for Houston City College.
-* **Sentiment Evolution:** Tracks news emotional trajectory with a calibrated $\pm 0.05$ threshold.
-* **Multilingual Support:** Auto-detection and translation of global news sources.
-* **2026 Ready:** Native support for NumPy 2.0 and the modern AI ecosystem.
+Welcome to my NewsBot 2.0! As an up-and-coming software developer, this project serves as my final capstone, transforming a foundational script into a production-ready news analysis platform. It demonstrates the practical application of advanced Natural Language Processing (NLP) techniques integrated into a cohesive, user-friendly web dashboard. 
 
----
+## ✨ Core Features & Modules
+This system integrates several specialized NLP pipelines:
 
-## 📚 Documentation
-
-For a deep dive into the architecture, dependency resolutions (NumPy 2.0 / Translation Wrapper), and module logic, please see:
-👉 **[TECHNICAL_DOCUMENTATION.md](./technical_documentation.md)**
-
----
-
-## 🧰 Tech Stack
-
-* **Backend:** Flask, Python 3.12+
-* **AI/NLP:** spaCy, Transformers, TextBlob, NLTK
-* **Data:** NumPy 2.0+, SciPy 1.14+, Pandas 2.0+
-
----
-
-## 👨‍💻 Author
-
-**Brandon Matias** | Houston City College  
-**Email:** [bmatias98@outlook.com](mailto:bmatias98@outlook.com)  
-**LinkedIn:** [linkedin.com/in/brandonmatias](https://www.linkedin.com/in/brandonmatias)
+* **Module A: Advanced Content Analysis Engine**
+  * **Enhanced Classification:** Categorizes articles dynamically using Hugging Face's `distilbart-mnli` Zero-Shot model with multi-level confidence scoring.
+  * **Topic Discovery:** Utilizes `scikit-learn` Latent Dirichlet Allocation (LDA) to extract hidden statistical themes from the text.
+  * **Entity Relationship Mapping:** Extracts key People, Organizations, and Locations using `spaCy`.
+  * **Sentiment Analysis:** Calculates the emotional tone using calibrated polarity thresholds.
+* **Module B: Language Understanding and Generation**
+  * **Intelligent Summarization:** Generates abstractive, human-like executive summaries using a dedicated `distilbart-cnn` transformer model.
+* **Module C: Multilingual Intelligence**
+  * **Language Detection:** Automatically identifies the source language of the pasted article using `langdetect`.
+  * **Translation Integration:** Seamlessly translates non-English text to English using `deep-translator` to ensure the NLP pipeline can accurately process global news.
+* **Module D: Conversational Interface**
+  * **Natural Language Queries:** Features an extractive Question Answering (QA) chatbot powered by `minilm-uncased-squad2` that reads the article context to answer specific user questions interactively.
+* **Bonus: Web Application Frontend**
+  * A complete Single Page Application (SPA) built with Flask, HTML/JS, and Bootstrap to provide an interactive intelligence dashboard.
 
 ---
 
-## 💡 Academic Context
+## 🚀 Colab Deployment Instructions
 
-Final capstone project for **ITAI 2373**. Satisfies all requirements for Modules A, B, and C, with bonus implementations for web deployment and multilingual processing.
+To run the NewsBot Intelligence System 2.0 in Google Colab, create two separate code cells and run them in order.
 
+### Step 1: Environment Setup
+This block downloads the repository, installs all necessary machine learning libraries, and downloads the required NLP models.
+
+```python
+import os
+import shutil
+
+# Target GitHub repository
+repo_name = "ITAI2373-NewsBot-Final"
+repo_url = "https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git" 
+
+# Clean up previous runs to avoid version conflicts
+if os.path.exists(repo_name):
+    shutil.rmtree(repo_name)
+
+# Clone the fresh repository
+!git clone {repo_url}
+
+# Enter the project directory
+%cd {repo_name}
+
+# Install dependencies and NLP models
+if os.path.exists("requirements.txt"):
+    print("Installing dependencies... This may take a minute.")
+    !pip install -r requirements.txt --quiet
+    
+    # Ensure all advanced NLP libraries are installed
+    !pip install deep-translator langdetect scikit-learn transformers torch --quiet
+    
+    # Download language dictionaries
+    !python -m spacy download en_core_web_sm --quiet
+    !python -m textblob.download_corpora --quiet
+    print("✅ Environment ready!")
+else:
+    print("❌ Error: requirements.txt not found. Check repository structure.")
+```
+### Step 2: Launch the Dashboard
+This block ensures the environment is in the correct working directory, generates a secure web link, and starts the Flask server safely.
+
+```python
+import os
+import subprocess
+from google.colab.output import eval_js
+from IPython.display import clear_output
+
+# Force Colab to enter the project folder
+%cd /content/ITAI2373-NewsBot-Final/
+
+print("🚀 Booting up the NewsBot 2.0 Server...")
+print("⏳ Loading NLP Models (This takes about 25-35 seconds, please wait)...")
+
+# Generate the public viewing link
+proxy_link = eval_js("google.colab.kernel.proxyPort(5000)")
+
+# Launch the app in the background so we can monitor its startup
+process = subprocess.Popen(['python', 'app.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+
+# Read the background logs until we see Flask announce it is running
+for line in iter(process.stdout.readline, ''):
+    if 'Running on' in line:
+        break 
+    if 'Error' in line or 'Traceback' in line:
+        print(line, end='')
+
+# Clear all the messy loading text
+clear_output()
+
+# Print the clean, prominent link
+print("=" * 65)
+print("✅ SYSTEM ONLINE AND READY!")
+print(f"🌐 Click here to open the NLP NewsBot 2.0 (May need time to fully load): {proxy_link}")
+print("=" * 65)
+print("\nLive Server Logs (Leave this cell running while you test):")
+
+for line in iter(process.stdout.readline, ''):
+    print(line, end='')
+```
 ---
 
-## 📂 Repository Structure
-| Folder | Content Description |
-| :--- | :--- |
-| `/src` | Core NLP packages, intelligence modules, and data processing. |
-| `/docs` | Technical specifications, API reference, and user guides. |
-| `/notebooks` | Experimental and development notebooks for system validation. |
-| `/reports` | Executive Summary and Final Technical Report (PDF). |
-| `/tests` | Unit tests for preprocessing, classification, and system integration. |
-| `/templates` | HTML templates for the Flask web application interface. |
-| `/models` | Directory for storing pre-trained model files (.pkl). |
+## 📁 Repository Structure
+
+```
+ITAI2373-NewsBot-Final/
+├── README.md               # Comprehensive project overview
+├── requirements.txt        # All dependencies with versions
+├── app.py                  # Flask web application frontend
+├── src/                    # Source code for all NLP modules
+│   ├── analysis/           # Classification, Sentiment, NER, and Topic Modeling
+│   ├── language_models/    # Text Summarization logic
+│   ├── multilingual/       # Translation and Language Detection Services
+│   └── conversation/       # Natural language query handling
+├── templates/              # HTML frontend files
+│   └── dashboard.html      # User Interface
+└── docs/                   # Documentation folder
+    └── individual_contributions.md # Individual contribution summary
