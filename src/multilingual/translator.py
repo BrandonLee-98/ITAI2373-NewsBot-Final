@@ -1,30 +1,14 @@
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 class NewsTranslator:
-    """
-    Handles translation workflows for cross-language content access.
-    Fulfills 'Translation Integration' requirement.
-    """
-    
     def __init__(self):
-        self.translator = Translator()
+        # Initializes the translator to automatically detect the source language 
+        # and translate it to English
+        self.translator = GoogleTranslator(source='auto', target='en')
 
-    def translate_to_english(self, text):
-        """
-        Translates source text into English.
-        """
+    def translate(self, text):
+        """Translates the provided text into English."""
         try:
-            result = self.translator.translate(text, dest='en')
-            return {
-                "original": text,
-                "translated": result.text,
-                "source_lang": result.src
-            }
+            return self.translator.translate(text)
         except Exception as e:
-            return {"error": f"Translation failed: {str(e)}"}
-
-if __name__ == "__main__":
-    # Test translation from Spanish to English
-    translator = NewsTranslator()
-    sample = "La inteligencia artificial está transformando el periodismo."
-    print(translator.translate_to_english(sample))
+            return f"Translation error: {str(e)}"
