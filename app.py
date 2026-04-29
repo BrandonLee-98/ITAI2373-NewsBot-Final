@@ -1,54 +1,65 @@
-from flask import Flask, render_template, request, redirect, url_for
-import os
-import sys
+from flask import Flask, render_template, request, jsonify, session
 
-# Ensure Python can see the 'src' folder
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+# Core Analysis Imports
+from src.analysis.classifier import NewsClassifier
+from src.analysis.topic_modeler import TopicModeler
+from src.analysis.sentiment_analyzer import SentimentAnalyzer
+from src.analysis.ner_extractor import EntityRelationshipMapper
 
-# Import your modular logic
-# This assumes your src/__init__.py exposes QueryProcessor
-try:
-    from src import QueryProcessor
-except ImportError:
-    # Fallback if the __init__.py isn't set up to export it directly
-    from src.conversation.query_processor import QueryProcessor
+# Language Models & Conversation Imports
+from src.language_models.summarizer import Summarizer
+from src.conversation.query_processor import QueryProcessor
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'hcc-final-project-2026')
+app.secret_key = 'newsbot-2026-secure-key'
 
-# Initialize the modular engine once when the app starts
-processor = QueryProcessor()
+# Initialize all NLP components separately to maintain modular design
+classifier = NewsClassifier()
+topic_modeler = TopicModeler()
+sentiment_analyzer = SentimentAnalyzer()
+entity_mapper = EntityRelationshipMapper()
+summarizer = Summarizer()
+query_processor = QueryProcessor()
 
 @app.route('/')
-def index():
-    """Renders the main dashboard page."""
-    return render_template('index.html')
+def dashboard():
+    """Renders the main frontend dashboard."""
+    return render_template('dashboard.html')
 
 @app.route('/analyze', methods=['POST'])
-def analyze():
-    """Handles the form submission from index.html."""
-    # 1. Get the article text from the HTML form
-    article_text = request.form.get('article_text', '')
-    
-    if not article_text.strip():
-        return redirect(url_for('index'))
+def analyze_article():
+    """Processes a single article through the entire NLP pipeline."""
+    data = request.json
+    article_text = data.get('text', '')
 
-    # 2. Process the content using your modular backend
-    # We default the intent to 'summarize' for the main button
-    summary_result = processor.process("summarize", article_text=article_text)
-    
-    # 3. Get sentiment/tone metrics for the results page
-    # This calls your SentimentAnalyzer via the QueryProcessor
-    sentiment_result = processor.process("analyze", article_text=article_text)
+    if not article_text:
+        return jsonify({'error': 'No text provided'}), 400
 
-    # 4. Render the results page with the data
-    return render_template(
-        'results.html',
-        summary=summary_result,
-        sentiment_text=sentiment_result,
-        original_text=article_text
-    )
+    # Perform comprehensive analysis using the specialized modules
+    results = {
+        'classification': classifier.predict(article_text),
+        'sentiment': sentiment_analyzer.get_sentiment_metrics(article_text),
+        'entities': entity_mapper.extract_entities(article_text),
+        'topics': topic_modeler.get_article_topics(article_text) if hasattr(topic_modeler, 'get_article_topics') else topic_modeler.get_topic_words(0), 
+        'summary': summarizer.summarize(article_text)
+    }
+    
+    return jsonify(results)
+
+@app.route('/query', methods=['POST'])
+def process_query():
+    """Handles natural language interaction via the conversational interface."""
+    data = request.json
+    user_query = data.get('query', '')
+    
+    if not user_query:
+         return jsonify({'error': 'No query provided'}), 400
+
+    # Process the user's intent and generate a response
+    response = query_processor.process(user_query)
+    
+    return jsonify({'response': response})
 
 if __name__ == '__main__':
-    # Threaded=True allows the app to handle multiple requests in Colab
+    # Set host to '0.0.0.0' to ensure it runs correctly within Google Colab
     app.run(host='0.0.0.0', port=5000, debug=True)
