@@ -1,23 +1,34 @@
-from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class Summarizer:
     def __init__(self):
-        # Loads a dedicated Abstractive Summarization model
-        # distilbart-cnn is optimized for news articles and runs efficiently
-        self.summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+        # We bypass the 'pipeline' wrapper and load the exact model and tokenizer explicitly.
+        # This prevents environment registry errors and gives us more control.
+        model_name = "sshleifer/distilbart-cnn-12-6"
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
     def summarize(self, text):
-        # Transformers need a minimum amount of text to generate a good summary
         if not text or len(text.split()) < 30:
             return "Article too short for a meaningful abstractive summary. Please provide a longer text."
             
         try:
-            # Generate the summary
-            # max_length and min_length control how concise the output is
-            result = self.summarizer(text, max_length=60, min_length=20, do_sample=False)
+            # 1. Tokenize the input text (convert words to numbers the model understands)
+            # truncation=True ensures we don't crash if the article is incredibly long
+            inputs = self.tokenizer(text, return_tensors="pt", max_length=1024, truncation=True)
             
-            # Extract and clean up the generated text
-            summary_text = result[0]['summary_text']
+            # 2. Generate the summary using beam search for higher quality
+            summary_ids = self.model.generate(
+                inputs["input_ids"], 
+                max_length=60, 
+                min_length=20, 
+                length_penalty=2.0, 
+                num_beams=4, 
+                early_stopping=True
+            )
+            
+            # 3. Decode the output numbers back into human-readable text
+            summary_text = self.tokenizer.decode(summary_ids[0], skip_special_tokens=True)
             return summary_text.strip()
             
         except Exception as e:
