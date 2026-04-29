@@ -8,7 +8,7 @@ An intelligent AI-driven news analysis platform that provides summarization, sen
 
 To launch the NewsBot 2.0 environment:
 
-1. **Paste the code below in Colab to run NewsBot 2.0:**
+1. **Paste the code below in Colab to setup the NewsBot 2.0:**
    
    ```python
    import os
@@ -36,6 +36,14 @@ To launch the NewsBot 2.0 environment:
        print("\n✅ Environment ready.")
    else:
        print("\n❌ Error: requirements.txt not found. Check your repository structure.")
+
+2. **Paste the code below to run the program:**
+   ```python
+   from google.colab.output import eval_js
+   print(f"Click here to open your Dashboard: {eval_js('google.colab.kernel.proxyPort(5000)')}")
+
+   # This will now find app.py because you are in the correct folder
+   !python app.py
 
 ---
 
