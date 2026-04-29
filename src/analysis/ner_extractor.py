@@ -1,6 +1,6 @@
 import spacy
 
-class NERExtractor:
+class EntityRelationshipMapper:
     def __init__(self, model="en_core_web_sm"):
         self.nlp = spacy.load(model)
 
