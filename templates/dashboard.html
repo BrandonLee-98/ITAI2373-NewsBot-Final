@@ -35,9 +35,9 @@
                 
                 <div class="mb-3">
                     <span class="text-muted small fw-bold">Load Sample:</span>
-                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('legal')">Supreme Court (Legal)</button>
-                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('tech')">AI Breakthrough (Tech)</button>
-                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('finance')">Market Rally (Finance)</button>
+                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('legal')">Global Regulation (Spanish)</button>
+                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('tech')">Technology & Robotics (English)</button>
+                    <button class="btn btn-outline-secondary sample-btn" onclick="loadSample('finance')">Finance & Market Analysis (English)</button>
                 </div>
 
                 <textarea id="article-text" class="form-control mb-3" rows="8" placeholder="Paste article content here (English, Spanish, French, etc.)..."></textarea>
@@ -104,8 +104,8 @@
 <script>
     const samples = {
         legal: "Section 2 imposes liability only when the evidence supports a strong inference that the state intentionally drew its districts to afford minority voters less opportunity because of their race.",
-        tech: "OpenAI announced today the release of a new artificial intelligence model designed to significantly improve logical reasoning capabilities.",
-        finance: "The Federal Reserve indicated it will hold interest rates steady through the summer of 2026. Markets rallied on the news."
+        tech: "The recent National AI Symposium held in Texas highlighted a massive shift in the integration of artificial intelligence within the manufacturing and robotics sectors. Startups emerging from local hubs, particularly in the greater Houston area, are pioneering autonomous systems that drastically reduce supply chain bottlenecks. One of the primary focal points of the symposium was the development of localized edge-computing networks, allowing factory robots to process complex environmental data without relying on cloud servers. While some industry veterans expressed concerns about the upfront capital required to overhaul legacy systems, the general consensus points to a 40% increase in operational efficiency over the next decade. Major tech analysts project that as these AI models become more computationally efficient, even mid-sized enterprises will adopt autonomous robotics by 2028.",
+        finance: "Wall Street experienced significant volatility this week as investors reacted to the latest Federal Reserve minutes regarding prolonged interest rates. Despite the macroeconomic headwinds, specialized tech and digital infrastructure equities saw unexpected surges. Companies involved in high-density data centers and cryptocurrency infrastructure, such as MARA Holdings, reported record-breaking hash rates, driving their stock prices up by 12% in early trading. Similarly, healthcare AI firms like Tempus AI are attracting heavy institutional investment following FDA approvals for their predictive diagnostic algorithms. Market strategists suggest that while traditional retail and banking sectors may face a contraction, the capital is rapidly rotating into AI-driven growth stocks. Analysts warn, however, that the aggressive valuations of these tech assets could lead to a sudden market correction if quarterly earnings fail to meet the hyper-inflated expectations."
     };
 
     function loadSample(type) {
