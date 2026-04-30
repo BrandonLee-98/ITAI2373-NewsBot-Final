@@ -1,80 +1,68 @@
-# 📖 NewsBot 2.0 User Guide
-
-Welcome to **NewsBot 2.0**, an advanced news intelligence platform designed to transform complex news data into actionable insights. This guide provides non-technical instructions for interacting with the system's four core analytical modules.
-
----
-
-## 🚀 Getting Started
-
-To begin using NewsBot 2.0, access your personalized **Interactive Dashboard**. This interface allows you to process articles and explore news trends without writing code.
-
-### System Access
-1. Launch the application via the provided link in your Google Colab session.
-2. Navigate to the **Article Analysis** tab to begin processing content.
-3. For processing multiple sources simultaneously, use the **Batch Processing** interface.
+# 📘 User Guide: NewsBot Intelligence System 2.0
+**Project:** NewsBot Intelligence System 2.0  
+**Course:** ITAI 2373 - Advanced NLP  
+**Developer:** Brandon Matias | Houston City College
 
 ---
 
-## 🔍 Core Features
+## 1. Introduction
+Welcome to **NewsBot 2.0**, your personal AI-driven news analyst. In an era of information overload, this tool is designed to cut through the noise by providing high-speed, automated intelligence. Whether you are tracking market trends, tech breakthroughs, or legal updates, NewsBot 2.0 handles the reading, translating, and summarizing so you can focus on the big picture.
 
-### 1. Advanced Content Analysis (Module A)
-Paste any news text into the analysis window to generate immediate insights. The system automatically performs:
-* **Enhanced Classification:** Categorizes news with high accuracy and provides confidence scoring.
-* **Topic Discovery:** Automatically identifies emerging themes and trends hidden within the text.
-* **Sentiment Evolution:** Tracks how the emotional tone of a story changes over time.
-* **Entity Relationship Mapping:** Visualizes connections between people, organizations, and events.
-
-### 2. Language Understanding & Generation (Module B)
-Go beyond basic reading with AI-driven content enhancement:
-* **Intelligent Summarization:** Generates concise, accurate summaries of lengthy articles.
-* **Insight Generation:** Automatically identifies key findings and recurring patterns.
-* **Contextual Enhancement:** Adds relevant background information to broaden your understanding.
+## 2. Key Capabilities
+This platform is more than just a search tool; it is a full-scale intelligence engine:
+* **Instant Categorization:** Automatically tags articles into categories like Finance, Tech, Politics, Health, or Legal.
+* **Smart Summarization:** Provides concise, human-like summaries that capture the "core message" of long-form articles.
+* **Language Barrier Removal:** Supports automated detection and translation of Spanish, French, and German news into English.
+* **Interactive Chat:** Allows you to ask follow-up questions directly to the article for specific data points.
 
 ---
 
-## 🌍 Multilingual Intelligence (Module C)
+## 3. Getting Started
+To begin using the NewsBot 2.0 dashboard, follow these simple steps:
 
-NewsBot 2.0 is designed for a global perspective, breaking down language barriers for comprehensive analysis.
-* **Language Detection:** Automatically identifies the source language of any article.
-* **Seamless Translation:** Provides immediate access to foreign-language content translated into English.
-* **Cross-Language Comparison:** Compare how events are reported across different regional and cultural sources.
+### Launching the Dashboard
+1. **Access the Environment:** Open the project in Google Colab or your designated local environment.
+2. **Install Dependencies:** Ensure all required libraries are loaded by running the setup cells or executing `pip install -r requirements.txt`.
+3. **Run the App:** Execute the `app.py` script. A local or proxy URL will be generated.
+4. **Open the Interface:** Click the link to open the web-based Intelligence Dashboard.
 
----
+## 4. Usage Instructions
+### Analyzing a Single Article
+1. **Locate an Article:** Find a news story you want to analyze (in English, Spanish, French, or German).
+2. **Copy & Paste:** Copy the text and paste it into the "Article Input" box on the dashboard.
+3. **Process:** Click the **"Run NLP Pipeline"** button.
+4. **Review Results:** Within seconds, the dashboard will populate with the Category, Sentiment, Executive Summary, and discovered Topic clusters.
 
-## 💬 Conversational Interface (Module D)
-
-You can interact with your news data using **Natural Language Queries**. Instead of searching for keywords, ask the system direct questions.
-
-### Example Queries:
-* *"Show me positive tech news from this week"*
-* *"What are the key findings regarding the recent market shift?"*
-* *"Who are the main organizations involved in this event?"*
-
-The **Query Processor** handles your intent and generates accurate, context-aware responses.
-
----
-
-## 📊 Reports and Exports
-
-Generate professional-grade materials on demand for business or academic use:
-* **Executive Summaries:** Export high-level business overviews in PDF format.
-* **Visualizations:** Download interactive charts and sentiment graphs for presentations.
+### Using the Conversational QA
+On the right-hand side of the dashboard, you will find the **NewsBot Chat** window:
+* **Ask a Question:** Type a specific question about the article you just analyzed (e.g., "What was the total investment mentioned?" or "Who is the primary spokesperson?").
+* **Get Answers:** The bot will extract the precise answer from the text and display it instantly.
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
+## 5. Frequently Asked Questions (FAQ)
 
-**Q: Can the system process real-time news?**
-**A:** Yes, NewsBot 2.0 can be configured to process live feeds for real-time trend prediction.
+**Q: Which news sources work best with NewsBot 2.0?**
+A: The system is optimized for high-quality, text-heavy news articles. It works best with structured reporting from sources like Reuters, AP, or specialized technical journals.
 
-**Q: Is there a way to see the raw data?**
-**A:** All original datasets are stored in the `data/raw/` directory for verification.
+**Q: Do I need a high-end GPU to run this system?**
+A: No. NewsBot 2.0 uses "Distilled" transformer models that are highly efficient. It is designed to run smoothly on standard Google Colab CPUs or modern laptop hardware.
 
-**Q: How do I troubleshoot connection issues?**
-**A:** Ensure your configuration settings in `config/settings.py` are correct and you are using a supported browser.
+**Q: Is my pasted text saved permanently?**
+A: By default, the system processes text in real-time. Analysis results are only saved if you explicitly use the "Export" feature to save findings to the `results/` folder.
+
+**Q: Can I add support for more languages?**
+A: Yes. The system is built with a modular translation pivot. Additional languages can be added by updating the configuration in `src/multilingual/translator.py`.
+
+**Q: Why does the Topic Modeling (LDA) require longer articles?**
+A: Statistical topic modeling requires a sufficient "bag of words" to identify meaningful patterns. For articles under 50 words, the system may prioritize general categorization over specific topic clusters.
 
 ---
 
-**Author:** Brandon Matias  
-**Institution:** Houston City College | AI & Robotics  
-**Course:** ITAI 2373 - Final Project
+## 6. Troubleshooting
+* **"No Data Found":** Ensure you have clicked the "Run NLP Pipeline" button before trying to use the chatbot.
+* **Translation Lag:** If processing a foreign language article, it may take 1-2 additional seconds for the translation engine to verify the source.
+* **Visualizations Not Loading:** Ensure your browser allows scripts from the dashboard URL, as interactive charts require JavaScript to render.
+
+---
+*Developed by Brandon Matias | Houston City College | ITAI 2373 Final Project Submission*
