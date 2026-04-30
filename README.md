@@ -84,7 +84,7 @@ from IPython.display import clear_output
 %cd /content/ITAI2373-NewsBot-Final/
 
 print("🚀 Booting up the NewsBot 2.0 Server...")
-print("⏳ Loading NLP Models (This takes about 25-35 seconds, please wait)...")
+print("⏳ Loading NLP Models (This takes about 45-60 seconds, please wait)...")
 
 # Generate the public viewing link
 proxy_link = eval_js("google.colab.kernel.proxyPort(5000)")
