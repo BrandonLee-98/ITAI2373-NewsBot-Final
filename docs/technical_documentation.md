@@ -1,79 +1,92 @@
-# 📰 NewsBot 2.0: AI-Driven News Intelligence Platform
-
-**NewsBot 2.0** is an end-to-end NLP platform designed to transform raw news data into actionable insights. Built with a modular architecture, the system performs intelligent summarization, sentiment evolution tracking, and entity relationship mapping.
-
-The project is optimized for the **2026 Python ecosystem**, featuring a self-healing environment designed to navigate the NumPy 2.0 transition.
-
----
-
-## 🏗️ System Architecture
-
-NewsBot 2.0 is divided into three core analytical modules powered by a Flask-based web dashboard:
-
-### 1. Sentiment Evolution Engine (`Module A`)
-* **Logic:** Utilizes a news-calibrated TextBlob implementation.
-* **Calibration:** Features a tightened threshold ($\pm 0.05$) to account for "Sentiment Dilution" in objective journalistic text.
-* **Feature:** Tracks mean polarity over time, allowing users to visualize the emotional trajectory of specific news cycles.
-
-### 2. Topic Discovery Engine (`Module B`)
-* **Logic:** Employs an unsupervised learning approach to cluster and identify recurring themes across multiple articles.
-* **Professional Alignment:** Previously `NewsTopicModeler`, now refactored as a high-level `TopicDiscoveryEngine`.
-
-### 3. Entity Relationship Mapper (`Module C`)
-* **Logic:** Powered by `spaCy` and the `en_core_web_sm` transformer model.
-* **Feature:** Performs Named Entity Recognition (NER) to extract and map relationships between organizations, locations, and key public figures.
+# 🛠️ Technical Documentation: NewsBot Intelligence System 2.0
+**Project:** NewsBot Intelligence System 2.0  
+**Course:** ITAI 2373 - Advanced NLP  
+**Developer:** Brandon Matias  
+**Institution:** Houston City College  
+**Date:** April 2026
 
 ---
 
-## 🛠️ Technical Challenges & Solutions
+## 1. System Architecture Overview
+The NewsBot 2.0 is a production-ready news analysis platform designed to demonstrate mastery of advanced NLP techniques. The architecture consists of four integrated modules designed for deep text understanding, multilingual analysis, and intelligent content generation.
 
-### The "2026 Binary Mismatch" Resolution
-During development, the project encountered a critical `ValueError: numpy.dtype size changed`. This was caused by the industry-wide transition to **NumPy 2.0**.
-* **Solution:** Engineered a "2026-Native" environment strategy, moving from strict version pins (`==`) to flexible compatibility ranges (`>=`). Implemented a binary monkeypatch for `scipy.linalg` to ensure legacy NLP models could operate on the modern architecture.
-
-### The Translation Dependency Wrapper
-The legacy `googletrans` library created a dependency conflict by forcing a downgrade of `httpx`, which broke the HuggingFace Hub connection.
-* **Solution:** Developed a custom **Drop-In Wrapper**. Created a local `googletrans.py` class that intercepts legacy calls and routes them through the stable `deep-translator` API, preserving the codebase without compromising system stability.
-
----
-
-## 🚀 Installation & Deployment (Google Colab)
-
-To deploy the NewsBot 2.0 environment in a fresh Google Colab session:
-
-1. **Environment Setup:**
-   ```python
-   !git clone [https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git](https://github.com/BrandonLee-98/ITAI2373-NewsBot-Final.git)
-   %cd ITAI2373-NewsBot-Final
-   !pip install -r requirements.txt --quiet
-   !python -m spacy download en_core_web_sm --quiet
-   ```
-   ---
- 2. **Launch Dashboard:**
-    ```python
-    from google.colab.output import eval_js
-    print(eval_js("google.colab.kernel.proxyPort(5000)"))
-    !python app.py
-    ```
----
-## 🧰 Tech Stack
-
-* **Frontend:** HTML5, CSS3 (Branded for Houston City College), JavaScript
-* **Backend:** Flask (Python)
-* **AI/NLP:** spaCy, Transformers, TextBlob, NLTK, Sentence-Transformers
-* **Data Science:** NumPy 2.0+, SciPy 1.14+, Pandas 2.0+
-* **Translation:** Deep-Translator API
+### Core Modules
+* **Module A: Advanced Content Analysis Engine**
+    * Multi-level categorization with confidence scoring.
+    * Automatic identification of emerging themes via Topic Discovery.
+    * Emotional tone tracking and sentiment evolution.
+    * Entity Relationship Mapping between people, organizations, and events.
+* **Module B: Language Understanding and Generation**
+    * Abstractive and accurate article summarization.
+    * Content enhancement using contextual information.
+    * Identification of key findings and narrative patterns.
+* **Module C: Multilingual Intelligence**
+    * Automatic language detection for global sources.
+    * Translation integration for seamless content access.
+    * Cross-language analysis for regional perspective comparisons.
+* **Module D: Conversational Interface**
+    * Natural language query handling via extractive QA.
+    * Interactive exploration of specific topics or entities.
+    * Generation of on-demand reports and visualizations.
 
 ---
 
-## 👨‍💻 Author
-
-**Brandon Matias** *Up-and-Coming Developer* Houston City College | AI & Robotics  
-**Email:** [bmatias98@outlook.com](mailto:bmatias98@outlook.com)  
-**LinkedIn:** [linkedin.com/in/brandonmatias](https://www.linkedin.com/in/brandonmatias)
+## 2. NLP Model Specifications
+The system leverages state-of-the-art transformer architectures and statistical algorithms to fulfill technical requirements:
+* **Zero-Shot Classification:** Utilizes NLI-based models (`distilbart-mnli`) for multi-level categorization without the need for pre-defined training labels.
+* **Topic Modeling:** Implements Latent Dirichlet Allocation (LDA) and Non-negative Matrix Factorization (NMF) for content discovery and trend analysis.
+* **Summarization:** Employs `distilbart-cnn-12-6` for abstractive text generation, synthesizing new sentences rather than simply extracting them.
+* **Conversational QA:** Uses a `minilm-uncased-squad2` model for context-aware natural language processing.
+* **Named Entity Recognition (NER):** Extracts people, organizations, and locations via spaCy and Transformer pipelines.
 
 ---
 
-## 💡 Academic Context
+## 3. Repository Structure
+The project follows a modular design to ensure a clear separation of concerns and system maintainability.
 
-This project was developed as the final capstone for **ITAI 2373**. It satisfies all core requirements for Modules A, B, and C, while implementing bonus features including a full-stack web dashboard and a multilingual translation engine.
+```text
+ITAI2373-NewsBot-Final/
+├── README.md               # Project overview and individual contribution summary
+├── requirements.txt        # All dependencies with specific versions
+├── config/                 # Configuration and setting management
+│   ├── settings.py         # Global parameters and paths
+│   └── api_keys_template.txt
+├── src/                    # Main source code
+│   ├── data_processing/    # Preprocessing and feature extraction
+│   ├── analysis/           # Classification, Sentiment, NER, and Topic Modeling
+│   ├── language_models/    # Summarization and generation logic
+│   ├── multilingual/       # Translation and cross-lingual services
+│   └── conversation/       # Natural language query processing
+├── notebooks/              # Experimental design and module walkthroughs
+├── tests/                  # Unit tests for core functions and integration
+├── models/                 # Serialized trained model files (.joblib)
+├── results/                # Analysis outputs and saved visualizations
+├── reports/                # Professional PDF documentation
+└── docs/                   # Markdown-native documentation
+```
+---
+## 4. API Reference & Core Logic
+The system implements professional-grade Python classes to handle automated data flow.
+
+### TopicModeler (`src/analysis/topic_modeler.py`)
+* **Purpose:** Discover hidden topics in unstructured news content.
+* **`fit_transform(documents)`:** Trains the statistical model and transforms the corpus into a topic distribution.
+* **`get_topic_words(topic_id)`:** Retrieves top weighted terms to define discovered themes.
+
+### NewsClassifier (`src/analysis/classifier.py`)
+* **Purpose:** Enhanced multi-label classification system.
+* **`predict(text)`:** Returns the highest-probability category labels with associated confidence scores.
+* **`get_sentiment(text)`:** Analyzes emotional tone changes and polarity.
+
+### QueryProcessor (`src/conversation/query_processor.py`)
+* **Purpose:** Handles natural language query interaction.
+* **`process(query)`:** Performs intent detection and generates responses grounded in the article context.
+
+## 5. Performance Optimization & Quality Standards
+* **Modular Design:** Clear separation of concerns with reusable components for feature extraction and analysis.
+* **Data Validation:** Rigorous quality checks on input text to handle noise and formatting issues.
+* **Persistence:** Custom-trained components are serialized to the `models/` directory to optimize inference speed and reduce retraining overhead.
+* **Testing:** A comprehensive unit testing suite ensures the reliability of the preprocessing, classification, and integration modules.
+
+---
+*Developed by Brandon Matias | Houston City College | ITAI 2373 Final Project Submission*
