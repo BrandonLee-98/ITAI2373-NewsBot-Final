@@ -1,3 +1,6 @@
+[← Back to NLP Collection](https://github.com/BrandonLee-98/Brandon-Matias-NLP-ITAI2373) | [🏠 Back to Main Portfolio Hub](https://github.com/BrandonLee-98/AI-Portfolio-Brandon-Matias)
+
+# NewsBot 2.0: Automated News & Sentiment Classifier
 # 📰 NewsBot Intelligence System 2.0
 **Advanced NLP Integration and Analysis Platform**
 
